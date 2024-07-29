@@ -1,6 +1,7 @@
 import pandas as pd
 from pandas import DataFrame
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 
 BRIDGE_1 = "fitbit_data/mturkfitbit_export_3.12.16-4.11.16/Fitabase Data 3.12.16-4.11.16/"
 
@@ -19,6 +20,36 @@ def print_colored(text, color):
     }
     print(f"{colors[color]}{text}{colors['reset']}")
 
+
+def calculate_moving_average(df, window=7):
+    df['MovingAverageSteps'] = df['TotalSteps'].rolling(window=window).mean()
+    plt.figure(figsize=(12, 6))
+    plt.plot(df['ActivityDate'], df['TotalSteps'], label='Total Steps')
+    plt.plot(df['ActivityDate'], df['MovingAverageSteps'], label='7-Day Moving Average', color='orange')
+    plt.xlabel('Date')
+    plt.ylabel('Total Steps')
+    plt.title('Total Steps and 7-Day Moving Average Over Time')
+    plt.legend()
+    plt.show()
+
+
+def compare_activity_levels(df):
+    activity_counts = df['ActivityLevel'].value_counts()
+    activity_counts.plot(kind='bar', color=['blue', 'orange'])
+    plt.title('Comparison of Activity Levels')
+    plt.xlabel('Activity Level')
+    plt.ylabel('Count')
+    plt.show()
+
+
+def kmeans_clustering(df, n_clusters=3):
+    kmeans = KMeans(n_clusters=n_clusters)
+    df['Cluster'] = kmeans.fit_predict(df[['TotalSteps', 'Calories', 'VeryActiveMinutes']])
+    plt.scatter(df['TotalSteps'], df['Calories'], c=df['Cluster'], cmap='viridis')
+    plt.xlabel('Total Steps')
+    plt.ylabel('Calories')
+    plt.title('K-means Clustering of Activity Data')
+    plt.show()
 
 def process_activity_date(df: DataFrame) -> DataFrame:
     # Change to date time object to work better with date analysis
@@ -79,6 +110,10 @@ def main():
     correlation_analysis(df)
     get_most_active_day(df)
     visualize(df)
+
+    calculate_moving_average(df)
+    compare_activity_levels(df)
+    kmeans_clustering(df)
 
 
 main()
