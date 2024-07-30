@@ -51,6 +51,7 @@ def kmeans_clustering(df, n_clusters=3):
     plt.title('K-means Clustering of Activity Data')
     plt.show()
 
+
 def process_activity_date(df: DataFrame) -> DataFrame:
     # Change to date time object to work better with date analysis
 
