@@ -3,7 +3,7 @@ from pandas import DataFrame
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
-BRIDGE_1 = "fitbit_data/mturkfitbit_export_3.12.16-4.11.16/Fitabase Data 3.12.16-4.11.16/"
+LINK_PREFIX = "fitbit_data/mturkfitbit_export_3.12.16-4.11.16/Fitabase Data 3.12.16-4.11.16/"
 
 
 def print_colored(text, color):
@@ -81,7 +81,7 @@ def get_most_active_day(df):
 
 
 def get_daily_activity_data() -> DataFrame:
-    data = BRIDGE_1 + "dailyActivity_merged.csv"
+    data = LINK_PREFIX + "dailyActivity_merged.csv"
     df = pd.read_csv(data)
     return df
 
